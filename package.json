@@ -1,5 +1,5 @@
 {
-  "name": "template-node-10-full-setup",
+  "name": "template-node-10-full-setup-wo-db",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",

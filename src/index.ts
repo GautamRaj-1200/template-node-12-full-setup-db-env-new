@@ -1,4 +1,3 @@
-import './config/config.js';
 import type { Server } from 'node:http';
 import { sql } from 'drizzle-orm';
 

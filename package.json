@@ -5,9 +5,9 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc --build",
-    "dev": "cross-env NODE_ENV=development concurrently \"tsc --watch\" \"nodemon --watch dist dist/index.js\"",
-    "start:staging": "cross-env NODE_ENV=staging node dist/index.js",
-    "start:production": "cross-env NODE_ENV=production node dist/index.js",
+    "dev": "concurrently \"tsc --watch\" \"nodemon --watch dist --exec \\\"node --env-file=.env.development dist/index.js\\\"\"",
+    "start:staging": "node --env-file=.env.staging dist/index.js",
+    "start:production": "node --env-file=.env.production dist/index.js",
     "prepare": "husky"
   },
   "lint-staged": {
@@ -46,7 +46,6 @@
     "@types/node": "^26.1.1",
     "@types/pg": "^8.20.0",
     "concurrently": "^10.0.3",
-    "cross-env": "^10.1.0",
     "drizzle-kit": "1.0.0-rc.4",
     "eslint": "^10.7.0",
     "eslint-config-prettier": "^10.1.8",
@@ -62,7 +61,6 @@
   "dependencies": {
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.6",
-    "dotenv": "^17.4.2",
     "drizzle-orm": "1.0.0-rc.4",
     "express": "^5.2.1",
     "pg": "^8.22.0"

@@ -3,7 +3,27 @@
 
 // ─── Academic sessions ──────────────────────────────────────────────
 export const SESSIONS = [
-  { label: '2026-27', startYear: 2026, startDate: '2026-04-01', endDate: '2027-03-31' },
+  {
+    board: 'cbse',
+    label: '2026-27',
+    startYear: 2026,
+    startDate: '2026-04-01',
+    endDate: '2027-03-31',
+  },
+  {
+    board: 'icse',
+    label: '2026-27',
+    startYear: 2026,
+    startDate: '2026-04-01',
+    endDate: '2027-03-31',
+  },
+  {
+    board: 'wbbse',
+    label: '2026',
+    startYear: 2026,
+    startDate: '2026-01-01',
+    endDate: '2026-12-31',
+  },
 ];
 
 // ─── Boards and the classes each one covers ─────────────────────────

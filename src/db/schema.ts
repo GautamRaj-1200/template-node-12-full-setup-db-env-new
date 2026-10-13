@@ -31,19 +31,25 @@ export const academicSessionsTable = academicSyllabus.table(
   'academic_sessions',
   {
     id: integer().primaryKey().generatedAlwaysAsIdentity(),
+    boardId: integer()
+      .notNull()
+      .references(() => boardsTable.id, { onDelete: 'restrict' }),
 
-    label: varchar({ length: 7 }).notNull().unique(), // 2026-27
-    startYear: integer().notNull().unique(), // 2026 -- for sorting & comparing
-    startDate: date().notNull().unique(),
-    endDate: date().notNull().unique(),
+    label: varchar({ length: 7 }).notNull(), // '2026-27' or '2026'
+    startYear: integer().notNull(),
+    startDate: date().notNull(),
+    endDate: date().notNull(),
 
     ...timestamps,
   },
   (t) => [
-    // '2026-27' must match startYear 2026
+    unique().on(t.boardId, t.label),
+    unique().on(t.boardId, t.startYear),
+    // label is either '2026' or '2026-27'
     check(
       'academic_sessions_label_matches_start_year',
-      sql`${t.label} = ${t.startYear}::text || '-' || lpad(((${t.startYear} + 1) % 100)::text, 2, '0')`,
+      sql`${t.label} = ${t.startYear}::text
+          OR ${t.label} = ${t.startYear}::text || '-' || lpad(((${t.startYear} + 1) % 100)::text, 2, '0')`,
     ),
     check('academic_sessions_end_after_start', sql`${t.endDate} > ${t.startDate}`),
   ],

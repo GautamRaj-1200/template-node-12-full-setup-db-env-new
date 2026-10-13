@@ -1,0 +1,1 @@
+{"root":["./drizzle.config.ts","./src/app.ts","./src/index.ts","./src/db/db.ts","./src/db/schema.ts","./src/db/seed.ts","./src/middleware/error.middleware.ts","./src/utils/apierror.ts","./src/utils/apiresponse.ts","./src/utils/asynchandler.ts"],"errors":true,"version":"6.0.3"}

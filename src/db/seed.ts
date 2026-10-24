@@ -31,18 +31,37 @@ const slugify = (text: string) =>
 const range = (from: number, to: number) =>
   Array.from({ length: to - from + 1 }, (_, i) => from + i);
 
-// ─── 1. Sessions ────────────────────────────────────────────────────
-async function seedSessions(tx: Tx) {
-  const inserted = await tx
-    .insert(academicSessionsTable)
-    .values(SESSIONS)
-    .onConflictDoNothing({ target: academicSessionsTable.label })
-    .returning({ id: academicSessionsTable.id });
-
-  console.log(`Sessions: ${inserted.length} inserted`);
+// Map "icse" -> board id
+async function loadBoardIds(tx: Tx) {
+  const rows = await tx.select({ id: boardsTable.id, slug: boardsTable.slug }).from(boardsTable);
+  return new Map(rows.map((r) => [r.slug, r.id]));
 }
 
-// ─── 2. Boards ──────────────────────────────────────────────────────
+// Map "icse:8" -> class id
+async function loadClassIds(tx: Tx) {
+  const rows = await tx
+    .select({ id: classesTable.id, class: classesTable.class, board: boardsTable.slug })
+    .from(classesTable)
+    .innerJoin(boardsTable, eq(boardsTable.id, classesTable.boardId));
+
+  return new Map(rows.map((r) => [`${r.board}:${r.class}`, r.id]));
+}
+
+// Map "icse:2026-27" -> session id (always board + label, never label alone)
+async function loadSessionIds(tx: Tx) {
+  const rows = await tx
+    .select({
+      id: academicSessionsTable.id,
+      label: academicSessionsTable.label,
+      board: boardsTable.slug,
+    })
+    .from(academicSessionsTable)
+    .innerJoin(boardsTable, eq(boardsTable.id, academicSessionsTable.boardId));
+
+  return new Map(rows.map((r) => [`${r.board}:${r.label}`, r.id]));
+}
+
+// ─── 1. Boards ──────────────────────────────────────────────────────
 async function seedBoards(tx: Tx) {
   const inserted = await tx
     .insert(boardsTable)
@@ -53,22 +72,31 @@ async function seedBoards(tx: Tx) {
   console.log(`Boards: ${inserted.length} inserted`);
 }
 
+// ─── 2. Sessions (per board) ────────────────────────────────────────
+async function seedSessions(tx: Tx) {
+  const boardIds = await loadBoardIds(tx);
+
+  const rows = SESSIONS.map(({ board, ...session }) => {
+    const boardId = boardIds.get(board);
+    if (!boardId) throw new Error(`Board not found for session ${session.label}: ${board}`);
+    return { boardId, ...session };
+  });
+
+  const inserted = await tx
+    .insert(academicSessionsTable)
+    .values(rows)
+    .onConflictDoNothing({ target: [academicSessionsTable.boardId, academicSessionsTable.label] })
+    .returning({ id: academicSessionsTable.id });
+
+  console.log(`Sessions: ${inserted.length} inserted`);
+}
+
 // ─── 3. Classes (each board's own range) ────────────────────────────
 async function seedClasses(tx: Tx) {
-  const boards = await tx
-    .select({ id: boardsTable.id, slug: boardsTable.slug })
-    .from(boardsTable)
-    .where(
-      inArray(
-        boardsTable.slug,
-        BOARDS.map((b) => b.slug),
-      ),
-    );
-
-  const boardIdBySlug = new Map(boards.map((b) => [b.slug, b.id]));
+  const boardIds = await loadBoardIds(tx);
 
   const rows = BOARDS.flatMap((board) => {
-    const boardId = boardIdBySlug.get(board.slug);
+    const boardId = boardIds.get(board.slug);
     if (!boardId) throw new Error(`Board not found: ${board.slug}`);
 
     return range(board.classes.from, board.classes.to).map((c) => ({ boardId, class: c }));
@@ -81,16 +109,6 @@ async function seedClasses(tx: Tx) {
     .returning({ id: classesTable.id });
 
   console.log(`Classes: ${inserted.length} inserted`);
-}
-
-// Map "icse:8" -> class id
-async function loadClassIds(tx: Tx) {
-  const rows = await tx
-    .select({ id: classesTable.id, class: classesTable.class, board: boardsTable.slug })
-    .from(classesTable)
-    .innerJoin(boardsTable, eq(boardsTable.id, classesTable.boardId));
-
-  return new Map(rows.map((r) => [`${r.board}:${r.class}`, r.id]));
 }
 
 // ─── 4. Subjects (from SUBJECT_RULES) ───────────────────────────────
@@ -124,23 +142,22 @@ async function seedSubjects(tx: Tx) {
   console.log(`Subjects: ${inserted.length} inserted`);
 }
 
-// ─── 5 & 6. Chapters + syllabus for each session ────────────────────
+// ─── 5. Chapters + syllabus for each session ────────────────────────
 // The syllabus in seed-data.ts is the source of truth: re-running replaces
 // a subject's chapter list for that session (so reordering works).
 async function seedSyllabus(tx: Tx) {
   const classIds = await loadClassIds(tx);
-
-  const sessions = await tx
-    .select({ id: academicSessionsTable.id, label: academicSessionsTable.label })
-    .from(academicSessionsTable);
-  const sessionIdByLabel = new Map(sessions.map((s) => [s.label, s.id]));
+  const sessionIds = await loadSessionIds(tx);
 
   let chapterCount = 0;
   let linkCount = 0;
 
   for (const entry of SYLLABUS) {
-    const sessionId = sessionIdByLabel.get(entry.session);
-    if (!sessionId) throw new Error(`Session not found: ${entry.session}`);
+    // Session is looked up by the entry's own board, so a subject can never
+    // be attached to another board's session.
+    const sessionId = sessionIds.get(`${entry.board}:${entry.session}`);
+    if (!sessionId)
+      throw new Error(`Session not found: ${entry.board} ${entry.session}. Add it to SESSIONS.`);
 
     const classId = classIds.get(`${entry.board}:${entry.class}`);
     if (!classId) throw new Error(`Class not found: ${entry.board} class ${entry.class}`);
@@ -215,11 +232,11 @@ async function seedSyllabus(tx: Tx) {
 // ─── Run everything in one transaction, parents before children ─────
 async function main() {
   await db.transaction(async (tx) => {
-    await seedSessions(tx);
     await seedBoards(tx);
-    await seedClasses(tx);
-    await seedSubjects(tx);
-    await seedSyllabus(tx);
+    await seedSessions(tx); // needs boards
+    await seedClasses(tx); // needs boards
+    await seedSubjects(tx); // needs classes
+    await seedSyllabus(tx); // needs sessions, subjects
   });
 
   console.log('Seed complete');

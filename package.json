@@ -8,7 +8,10 @@
     "dev": "concurrently \"tsc --watch\" \"nodemon --watch dist --exec \\\"node --env-file=.env.development dist/index.js\\\"\"",
     "start:staging": "node --env-file=.env.staging dist/index.js",
     "start:production": "node --env-file=.env.production dist/index.js",
-    "prepare": "husky"
+    "prepare": "husky",
+    "db:migrate": "node --env-file=.env.development node_modules/drizzle-kit/bin.cjs migrate",
+    "db:seed": "tsx --env-file=.env.development src/db/seed.ts",
+    "db:reset": "tsx --env-file=.env.development src/db/reset.ts"
   },
   "lint-staged": {
     "*.{js,mjs,cjs,ts,mts,cts}": [

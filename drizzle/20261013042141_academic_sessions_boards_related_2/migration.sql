@@ -1,0 +1,1 @@
+ALTER TABLE "academic_syllabus"."academic_sessions" DROP CONSTRAINT "academic_sessions_label_matches_start_year", ADD CONSTRAINT "academic_sessions_label_matches_start_year" CHECK ("label" = "start_year"::text OR "label" = "start_year"::text || '-' || lpad((("start_year" + 1) % 100)::text, 2, '0'));

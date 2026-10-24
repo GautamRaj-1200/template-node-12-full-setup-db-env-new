@@ -26,7 +26,22 @@ const timestamps = {
     .$onUpdate(() => new Date()), // only fires for updates made through Drizzle
 };
 
-// Tables
+// ─── Boards ─────────────────────────────────────────────────────────
+export const boardsTable = academicSyllabus.table('boards', {
+  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+
+  slug: varchar({ length: 20 }).notNull().unique(), // icse -- never change once created
+  shortName: varchar({ length: 30 }).notNull().unique(), // CISCE (ICSE/ISC)
+  longName: text(), // Council for the Indian School Certificate Examinations
+
+  isActive: boolean().notNull().default(true),
+
+  ...timestamps,
+});
+
+// ─── Academic sessions (each board has its own calendar) ────────────
+// CBSE / CISCE: April–March, labelled '2026-27'
+// WBBSE:        January–December, labelled '2026'
 export const academicSessionsTable = academicSyllabus.table(
   'academic_sessions',
   {
@@ -36,7 +51,7 @@ export const academicSessionsTable = academicSyllabus.table(
       .references(() => boardsTable.id, { onDelete: 'restrict' }),
 
     label: varchar({ length: 7 }).notNull(), // '2026-27' or '2026'
-    startYear: integer().notNull(),
+    startYear: integer().notNull(), // 2026 -- for sorting & comparing
     startDate: date().notNull(),
     endDate: date().notNull(),
 
@@ -45,28 +60,16 @@ export const academicSessionsTable = academicSyllabus.table(
   (t) => [
     unique().on(t.boardId, t.label),
     unique().on(t.boardId, t.startYear),
-    // label is either '2026' or '2026-27'
+    // label is either '2026' or '2026-27', matching startYear
     check(
       'academic_sessions_label_matches_start_year',
-      sql`${t.label} = ${t.startYear}::text
-          OR ${t.label} = ${t.startYear}::text || '-' || lpad(((${t.startYear} + 1) % 100)::text, 2, '0')`,
+      sql`${t.label} = ${t.startYear}::text OR ${t.label} = ${t.startYear}::text || '-' || lpad(((${t.startYear} + 1) % 100)::text, 2, '0')`,
     ),
     check('academic_sessions_end_after_start', sql`${t.endDate} > ${t.startDate}`),
   ],
 );
 
-export const boardsTable = academicSyllabus.table('boards', {
-  id: integer().primaryKey().generatedAlwaysAsIdentity(),
-
-  slug: varchar({ length: 20 }).notNull().unique(), // cisce -- never change once created
-  shortName: varchar({ length: 30 }).notNull().unique(), // CISCE (ICSE/ISC)
-  longName: text(), // Council for the Indian School Certificate Examinations
-
-  isActive: boolean().notNull().default(true),
-
-  ...timestamps,
-});
-
+// ─── Classes ────────────────────────────────────────────────────────
 export const classesTable = academicSyllabus.table(
   'classes',
   {
@@ -88,6 +91,7 @@ export const classesTable = academicSyllabus.table(
   ],
 );
 
+// ─── Subjects ───────────────────────────────────────────────────────
 export const subjectsTable = academicSyllabus.table(
   'subjects',
   {
@@ -97,7 +101,7 @@ export const subjectsTable = academicSyllabus.table(
       .references(() => classesTable.id, { onDelete: 'restrict' }),
 
     slug: varchar({ length: 100 }).notNull(), // mathematics
-    shortName: varchar({ length: 30 }).notNull(), // Math
+    shortName: varchar({ length: 30 }).notNull(), // Maths
     longName: varchar({ length: 100 }).notNull(), // Mathematics
 
     isActive: boolean().notNull().default(true),
@@ -111,6 +115,7 @@ export const subjectsTable = academicSyllabus.table(
   ],
 );
 
+// ─── Chapters (catalogue of every chapter a subject has ever had) ───
 export const chaptersTable = academicSyllabus.table(
   'chapters',
   {
@@ -133,6 +138,7 @@ export const chaptersTable = academicSyllabus.table(
   ],
 );
 
+// ─── Syllabus: which chapters a subject has in a session, in order ──
 export const syllabusChaptersTable = academicSyllabus.table(
   'syllabus_chapters',
   {

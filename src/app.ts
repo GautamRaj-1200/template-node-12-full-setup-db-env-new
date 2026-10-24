@@ -25,9 +25,17 @@ app.get('/health', (req, res) => {
 import { ApiError } from './utils/ApiError.js';
 import { errorHandler } from './middleware/error.middleware.js';
 
-// import authRoutes from "./routes/auth.routes.js"
-// Routes
-// app.use("/api/v1/auth",authRoutes)
+import boardRoutes from './routes/boards.routes.js';
+app.use('/api/v1/boards', boardRoutes);
+
+import academicSessionsRoutes from './routes/academicSessions.routes.js';
+app.use('/api/v1/academic-sessions', academicSessionsRoutes);
+
+import subjectRoutes from './routes/subjects.routes.js';
+app.use('/api/v1/subjects', subjectRoutes);
+
+import syllabusChaptersRoutes from './routes/syllabusChapters.routes.js';
+app.use('/api/v1/syllabus-chapters', syllabusChaptersRoutes);
 
 // 404 handler
 app.use((req, res, next) => {

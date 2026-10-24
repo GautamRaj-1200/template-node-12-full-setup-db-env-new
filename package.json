@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc --build",
+    "start": "node dist/index.js",
     "dev": "concurrently \"tsc --watch\" \"nodemon --watch dist --exec \\\"node --env-file=.env.development dist/index.js\\\"\"",
     "start:staging": "node --env-file=.env.staging dist/index.js",
     "start:production": "node --env-file=.env.production dist/index.js",
@@ -22,7 +23,7 @@
   "devEngines": {
     "runtime": {
       "name": "node",
-      "version": "22.22.2",
+      "version": "^22.22.2",
       "onFail": "error"
     },
     "packageManager": {

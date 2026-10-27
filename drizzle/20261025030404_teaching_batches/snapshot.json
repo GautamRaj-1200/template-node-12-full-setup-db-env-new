@@ -1,0 +1,1638 @@
+{
+  "version": "8",
+  "dialect": "postgres",
+  "id": "b86b7741-9ab1-42b5-84af-78e6f77791ee",
+  "prevIds": [
+    "a68895b9-570a-442b-92eb-8a3991301be0"
+  ],
+  "ddl": [
+    {
+      "name": "academic_syllabus",
+      "entityType": "schemas"
+    },
+    {
+      "name": "teaching",
+      "entityType": "schemas"
+    },
+    {
+      "isRlsEnabled": false,
+      "name": "academic_sessions",
+      "entityType": "tables",
+      "schema": "academic_syllabus"
+    },
+    {
+      "isRlsEnabled": false,
+      "name": "batch_members",
+      "entityType": "tables",
+      "schema": "teaching"
+    },
+    {
+      "isRlsEnabled": false,
+      "name": "batch_subjects",
+      "entityType": "tables",
+      "schema": "teaching"
+    },
+    {
+      "isRlsEnabled": false,
+      "name": "batches",
+      "entityType": "tables",
+      "schema": "teaching"
+    },
+    {
+      "isRlsEnabled": false,
+      "name": "boards",
+      "entityType": "tables",
+      "schema": "academic_syllabus"
+    },
+    {
+      "isRlsEnabled": false,
+      "name": "books",
+      "entityType": "tables",
+      "schema": "academic_syllabus"
+    },
+    {
+      "isRlsEnabled": false,
+      "name": "chapters",
+      "entityType": "tables",
+      "schema": "academic_syllabus"
+    },
+    {
+      "isRlsEnabled": false,
+      "name": "classes",
+      "entityType": "tables",
+      "schema": "academic_syllabus"
+    },
+    {
+      "isRlsEnabled": false,
+      "name": "files",
+      "entityType": "tables",
+      "schema": "academic_syllabus"
+    },
+    {
+      "isRlsEnabled": false,
+      "name": "subjects",
+      "entityType": "tables",
+      "schema": "academic_syllabus"
+    },
+    {
+      "isRlsEnabled": false,
+      "name": "syllabus_chapters",
+      "entityType": "tables",
+      "schema": "academic_syllabus"
+    },
+    {
+      "isRlsEnabled": false,
+      "name": "users",
+      "entityType": "tables",
+      "schema": "academic_syllabus"
+    },
+    {
+      "type": "integer",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": {
+        "type": "always",
+        "name": "academic_sessions_id_seq",
+        "increment": "1",
+        "startWith": "1",
+        "minValue": "1",
+        "maxValue": "2147483647",
+        "cache": 1,
+        "cycle": false
+      },
+      "name": "id",
+      "entityType": "columns",
+      "schema": "academic_syllabus",
+      "table": "academic_sessions"
+    },
+    {
+      "type": "integer",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "board_id",
+      "entityType": "columns",
+      "schema": "academic_syllabus",
+      "table": "academic_sessions"
+    },
+    {
+      "type": "varchar(7)",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "label",
+      "entityType": "columns",
+      "schema": "academic_syllabus",
+      "table": "academic_sessions"
+    },
+    {
+      "type": "integer",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "start_year",
+      "entityType": "columns",
+      "schema": "academic_syllabus",
+      "table": "academic_sessions"
+    },
+    {
+      "type": "date",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "start_date",
+      "entityType": "columns",
+      "schema": "academic_syllabus",
+      "table": "academic_sessions"
+    },
+    {
+      "type": "date",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "end_date",
+      "entityType": "columns",
+      "schema": "academic_syllabus",
+      "table": "academic_sessions"
+    },
+    {
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "now()",
+      "generated": null,
+      "identity": null,
+      "name": "created_at",
+      "entityType": "columns",
+      "schema": "academic_syllabus",
+      "table": "academic_sessions"
+    },
+    {
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "now()",
+      "generated": null,
+      "identity": null,
+      "name": "updated_at",
+      "entityType": "columns",
+      "schema": "academic_syllabus",
+      "table": "academic_sessions"
+    },
+    {
+      "type": "integer",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "batch_id",
+      "entityType": "columns",
+      "schema": "teaching",
+      "table": "batch_members"
+    },
+    {
+      "type": "integer",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "user_id",
+      "entityType": "columns",
+      "schema": "teaching",
+      "table": "batch_members"
+    },
+    {
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "now()",
+      "generated": null,
+      "identity": null,
+      "name": "joined_at",
+      "entityType": "columns",
+      "schema": "teaching",
+      "table": "batch_members"
+    },
+    {
+      "type": "integer",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "batch_id",
+      "entityType": "columns",
+      "schema": "teaching",
+      "table": "batch_subjects"
+    },
+    {
+      "type": "integer",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "session_id",
+      "entityType": "columns",
+      "schema": "teaching",
+      "table": "batch_subjects"
+    },
+    {
+      "type": "integer",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "subject_id",
+      "entityType": "columns",
+      "schema": "teaching",
+      "table": "batch_subjects"
+    },
+    {
+      "type": "integer",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": {
+        "type": "always",
+        "name": "batches_id_seq",
+        "increment": "1",
+        "startWith": "1",
+        "minValue": "1",
+        "maxValue": "2147483647",
+        "cache": 1,
+        "cycle": false
+      },
+      "name": "id",
+      "entityType": "columns",
+      "schema": "teaching",
+      "table": "batches"
+    },
+    {
+      "type": "varchar(150)",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "name",
+      "entityType": "columns",
+      "schema": "teaching",
+      "table": "batches"
+    },
+    {
+      "type": "integer",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "created_by",
+      "entityType": "columns",
+      "schema": "teaching",
+      "table": "batches"
+    },
+    {
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "now()",
+      "generated": null,
+      "identity": null,
+      "name": "created_at",
+      "entityType": "columns",
+      "schema": "teaching",
+      "table": "batches"
+    },
+    {
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "now()",
+      "generated": null,
+      "identity": null,
+      "name": "updated_at",
+      "entityType": "columns",
+      "schema": "teaching",
+      "table": "batches"
+    },
+    {
+      "type": "integer",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": {
+        "type": "always",
+        "name": "boards_id_seq",
+        "increment": "1",
+        "startWith": "1",
+        "minValue": "1",
+        "maxValue": "2147483647",
+        "cache": 1,
+        "cycle": false
+      },
+      "name": "id",
+      "entityType": "columns",
+      "schema": "academic_syllabus",
+      "table": "boards"
+    },
+    {
+      "type": "varchar(20)",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "slug",
+      "entityType": "columns",
+      "schema": "academic_syllabus",
+      "table": "boards"
+    },
+    {
+      "type": "varchar(30)",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "short_name",
+      "entityType": "columns",
+      "schema": "academic_syllabus",
+      "table": "boards"
+    },
+    {
+      "type": "text",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "long_name",
+      "entityType": "columns",
+      "schema": "academic_syllabus",
+      "table": "boards"
+    },
+    {
+      "type": "boolean",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "true",
+      "generated": null,
+      "identity": null,
+      "name": "is_active",
+      "entityType": "columns",
+      "schema": "academic_syllabus",
+      "table": "boards"
+    },
+    {
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "now()",
+      "generated": null,
+      "identity": null,
+      "name": "created_at",
+      "entityType": "columns",
+      "schema": "academic_syllabus",
+      "table": "boards"
+    },
+    {
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "now()",
+      "generated": null,
+      "identity": null,
+      "name": "updated_at",
+      "entityType": "columns",
+      "schema": "academic_syllabus",
+      "table": "boards"
+    },
+    {
+      "type": "integer",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": {
+        "type": "always",
+        "name": "books_id_seq",
+        "increment": "1",
+        "startWith": "1",
+        "minValue": "1",
+        "maxValue": "2147483647",
+        "cache": 1,
+        "cycle": false
+      },
+      "name": "id",
+      "entityType": "columns",
+      "schema": "academic_syllabus",
+      "table": "books"
+    },
+    {
+      "type": "integer",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "syllabus_chapter_id",
+      "entityType": "columns",
+      "schema": "academic_syllabus",
+      "table": "books"
+    },
+    {
+      "type": "integer",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "file_id",
+      "entityType": "columns",
+      "schema": "academic_syllabus",
+      "table": "books"
+    },
+    {
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "now()",
+      "generated": null,
+      "identity": null,
+      "name": "created_at",
+      "entityType": "columns",
+      "schema": "academic_syllabus",
+      "table": "books"
+    },
+    {
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "now()",
+      "generated": null,
+      "identity": null,
+      "name": "updated_at",
+      "entityType": "columns",
+      "schema": "academic_syllabus",
+      "table": "books"
+    },
+    {
+      "type": "integer",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": {
+        "type": "always",
+        "name": "chapters_id_seq",
+        "increment": "1",
+        "startWith": "1",
+        "minValue": "1",
+        "maxValue": "2147483647",
+        "cache": 1,
+        "cycle": false
+      },
+      "name": "id",
+      "entityType": "columns",
+      "schema": "academic_syllabus",
+      "table": "chapters"
+    },
+    {
+      "type": "integer",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "subject_id",
+      "entityType": "columns",
+      "schema": "academic_syllabus",
+      "table": "chapters"
+    },
+    {
+      "type": "varchar(100)",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "slug",
+      "entityType": "columns",
+      "schema": "academic_syllabus",
+      "table": "chapters"
+    },
+    {
+      "type": "varchar(150)",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "name",
+      "entityType": "columns",
+      "schema": "academic_syllabus",
+      "table": "chapters"
+    },
+    {
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "now()",
+      "generated": null,
+      "identity": null,
+      "name": "created_at",
+      "entityType": "columns",
+      "schema": "academic_syllabus",
+      "table": "chapters"
+    },
+    {
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "now()",
+      "generated": null,
+      "identity": null,
+      "name": "updated_at",
+      "entityType": "columns",
+      "schema": "academic_syllabus",
+      "table": "chapters"
+    },
+    {
+      "type": "integer",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": {
+        "type": "always",
+        "name": "classes_id_seq",
+        "increment": "1",
+        "startWith": "1",
+        "minValue": "1",
+        "maxValue": "2147483647",
+        "cache": 1,
+        "cycle": false
+      },
+      "name": "id",
+      "entityType": "columns",
+      "schema": "academic_syllabus",
+      "table": "classes"
+    },
+    {
+      "type": "integer",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "board_id",
+      "entityType": "columns",
+      "schema": "academic_syllabus",
+      "table": "classes"
+    },
+    {
+      "type": "integer",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "class",
+      "entityType": "columns",
+      "schema": "academic_syllabus",
+      "table": "classes"
+    },
+    {
+      "type": "boolean",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "true",
+      "generated": null,
+      "identity": null,
+      "name": "is_active",
+      "entityType": "columns",
+      "schema": "academic_syllabus",
+      "table": "classes"
+    },
+    {
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "now()",
+      "generated": null,
+      "identity": null,
+      "name": "created_at",
+      "entityType": "columns",
+      "schema": "academic_syllabus",
+      "table": "classes"
+    },
+    {
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "now()",
+      "generated": null,
+      "identity": null,
+      "name": "updated_at",
+      "entityType": "columns",
+      "schema": "academic_syllabus",
+      "table": "classes"
+    },
+    {
+      "type": "integer",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": {
+        "type": "always",
+        "name": "files_id_seq",
+        "increment": "1",
+        "startWith": "1",
+        "minValue": "1",
+        "maxValue": "2147483647",
+        "cache": 1,
+        "cycle": false
+      },
+      "name": "id",
+      "entityType": "columns",
+      "schema": "academic_syllabus",
+      "table": "files"
+    },
+    {
+      "type": "text",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "file_key",
+      "entityType": "columns",
+      "schema": "academic_syllabus",
+      "table": "files"
+    },
+    {
+      "type": "integer",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "uploaded_by",
+      "entityType": "columns",
+      "schema": "academic_syllabus",
+      "table": "files"
+    },
+    {
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "now()",
+      "generated": null,
+      "identity": null,
+      "name": "created_at",
+      "entityType": "columns",
+      "schema": "academic_syllabus",
+      "table": "files"
+    },
+    {
+      "type": "integer",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": {
+        "type": "always",
+        "name": "subjects_id_seq",
+        "increment": "1",
+        "startWith": "1",
+        "minValue": "1",
+        "maxValue": "2147483647",
+        "cache": 1,
+        "cycle": false
+      },
+      "name": "id",
+      "entityType": "columns",
+      "schema": "academic_syllabus",
+      "table": "subjects"
+    },
+    {
+      "type": "integer",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "class_id",
+      "entityType": "columns",
+      "schema": "academic_syllabus",
+      "table": "subjects"
+    },
+    {
+      "type": "varchar(100)",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "slug",
+      "entityType": "columns",
+      "schema": "academic_syllabus",
+      "table": "subjects"
+    },
+    {
+      "type": "varchar(30)",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "short_name",
+      "entityType": "columns",
+      "schema": "academic_syllabus",
+      "table": "subjects"
+    },
+    {
+      "type": "varchar(100)",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "long_name",
+      "entityType": "columns",
+      "schema": "academic_syllabus",
+      "table": "subjects"
+    },
+    {
+      "type": "boolean",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "true",
+      "generated": null,
+      "identity": null,
+      "name": "is_active",
+      "entityType": "columns",
+      "schema": "academic_syllabus",
+      "table": "subjects"
+    },
+    {
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "now()",
+      "generated": null,
+      "identity": null,
+      "name": "created_at",
+      "entityType": "columns",
+      "schema": "academic_syllabus",
+      "table": "subjects"
+    },
+    {
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "now()",
+      "generated": null,
+      "identity": null,
+      "name": "updated_at",
+      "entityType": "columns",
+      "schema": "academic_syllabus",
+      "table": "subjects"
+    },
+    {
+      "type": "integer",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": {
+        "type": "always",
+        "name": "syllabus_chapters_id_seq",
+        "increment": "1",
+        "startWith": "1",
+        "minValue": "1",
+        "maxValue": "2147483647",
+        "cache": 1,
+        "cycle": false
+      },
+      "name": "id",
+      "entityType": "columns",
+      "schema": "academic_syllabus",
+      "table": "syllabus_chapters"
+    },
+    {
+      "type": "integer",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "session_id",
+      "entityType": "columns",
+      "schema": "academic_syllabus",
+      "table": "syllabus_chapters"
+    },
+    {
+      "type": "integer",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "chapter_id",
+      "entityType": "columns",
+      "schema": "academic_syllabus",
+      "table": "syllabus_chapters"
+    },
+    {
+      "type": "integer",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "subject_id",
+      "entityType": "columns",
+      "schema": "academic_syllabus",
+      "table": "syllabus_chapters"
+    },
+    {
+      "type": "integer",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "position",
+      "entityType": "columns",
+      "schema": "academic_syllabus",
+      "table": "syllabus_chapters"
+    },
+    {
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "now()",
+      "generated": null,
+      "identity": null,
+      "name": "created_at",
+      "entityType": "columns",
+      "schema": "academic_syllabus",
+      "table": "syllabus_chapters"
+    },
+    {
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "now()",
+      "generated": null,
+      "identity": null,
+      "name": "updated_at",
+      "entityType": "columns",
+      "schema": "academic_syllabus",
+      "table": "syllabus_chapters"
+    },
+    {
+      "type": "integer",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": {
+        "type": "always",
+        "name": "users_id_seq",
+        "increment": "1",
+        "startWith": "1",
+        "minValue": "1",
+        "maxValue": "2147483647",
+        "cache": 1,
+        "cycle": false
+      },
+      "name": "id",
+      "entityType": "columns",
+      "schema": "academic_syllabus",
+      "table": "users"
+    },
+    {
+      "type": "varchar(255)",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "email",
+      "entityType": "columns",
+      "schema": "academic_syllabus",
+      "table": "users"
+    },
+    {
+      "type": "integer",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "class_id",
+      "entityType": "columns",
+      "schema": "academic_syllabus",
+      "table": "users"
+    },
+    {
+      "nameExplicit": false,
+      "columns": [
+        "board_id"
+      ],
+      "schemaTo": "academic_syllabus",
+      "tableTo": "boards",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "RESTRICT",
+      "name": "academic_sessions_board_id_boards_id_fkey",
+      "entityType": "fks",
+      "schema": "academic_syllabus",
+      "table": "academic_sessions"
+    },
+    {
+      "nameExplicit": false,
+      "columns": [
+        "batch_id"
+      ],
+      "schemaTo": "teaching",
+      "tableTo": "batches",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "CASCADE",
+      "name": "batch_members_batch_id_batches_id_fkey",
+      "entityType": "fks",
+      "schema": "teaching",
+      "table": "batch_members"
+    },
+    {
+      "nameExplicit": false,
+      "columns": [
+        "user_id"
+      ],
+      "schemaTo": "academic_syllabus",
+      "tableTo": "users",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "RESTRICT",
+      "name": "batch_members_user_id_users_id_fkey",
+      "entityType": "fks",
+      "schema": "teaching",
+      "table": "batch_members"
+    },
+    {
+      "nameExplicit": false,
+      "columns": [
+        "batch_id"
+      ],
+      "schemaTo": "teaching",
+      "tableTo": "batches",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "CASCADE",
+      "name": "batch_subjects_batch_id_batches_id_fkey",
+      "entityType": "fks",
+      "schema": "teaching",
+      "table": "batch_subjects"
+    },
+    {
+      "nameExplicit": false,
+      "columns": [
+        "session_id"
+      ],
+      "schemaTo": "academic_syllabus",
+      "tableTo": "academic_sessions",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "RESTRICT",
+      "name": "batch_subjects_session_id_academic_sessions_id_fkey",
+      "entityType": "fks",
+      "schema": "teaching",
+      "table": "batch_subjects"
+    },
+    {
+      "nameExplicit": false,
+      "columns": [
+        "subject_id"
+      ],
+      "schemaTo": "academic_syllabus",
+      "tableTo": "subjects",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "RESTRICT",
+      "name": "batch_subjects_subject_id_subjects_id_fkey",
+      "entityType": "fks",
+      "schema": "teaching",
+      "table": "batch_subjects"
+    },
+    {
+      "nameExplicit": false,
+      "columns": [
+        "created_by"
+      ],
+      "schemaTo": "academic_syllabus",
+      "tableTo": "users",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "RESTRICT",
+      "name": "batches_created_by_users_id_fkey",
+      "entityType": "fks",
+      "schema": "teaching",
+      "table": "batches"
+    },
+    {
+      "nameExplicit": false,
+      "columns": [
+        "syllabus_chapter_id"
+      ],
+      "schemaTo": "academic_syllabus",
+      "tableTo": "syllabus_chapters",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "RESTRICT",
+      "name": "books_syllabus_chapter_id_syllabus_chapters_id_fkey",
+      "entityType": "fks",
+      "schema": "academic_syllabus",
+      "table": "books"
+    },
+    {
+      "nameExplicit": false,
+      "columns": [
+        "file_id"
+      ],
+      "schemaTo": "academic_syllabus",
+      "tableTo": "files",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "RESTRICT",
+      "name": "books_file_id_files_id_fkey",
+      "entityType": "fks",
+      "schema": "academic_syllabus",
+      "table": "books"
+    },
+    {
+      "nameExplicit": false,
+      "columns": [
+        "subject_id"
+      ],
+      "schemaTo": "academic_syllabus",
+      "tableTo": "subjects",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "RESTRICT",
+      "name": "chapters_subject_id_subjects_id_fkey",
+      "entityType": "fks",
+      "schema": "academic_syllabus",
+      "table": "chapters"
+    },
+    {
+      "nameExplicit": false,
+      "columns": [
+        "board_id"
+      ],
+      "schemaTo": "academic_syllabus",
+      "tableTo": "boards",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "RESTRICT",
+      "name": "classes_board_id_boards_id_fkey",
+      "entityType": "fks",
+      "schema": "academic_syllabus",
+      "table": "classes"
+    },
+    {
+      "nameExplicit": false,
+      "columns": [
+        "uploaded_by"
+      ],
+      "schemaTo": "academic_syllabus",
+      "tableTo": "users",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "RESTRICT",
+      "name": "files_uploaded_by_users_id_fkey",
+      "entityType": "fks",
+      "schema": "academic_syllabus",
+      "table": "files"
+    },
+    {
+      "nameExplicit": false,
+      "columns": [
+        "class_id"
+      ],
+      "schemaTo": "academic_syllabus",
+      "tableTo": "classes",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "RESTRICT",
+      "name": "subjects_class_id_classes_id_fkey",
+      "entityType": "fks",
+      "schema": "academic_syllabus",
+      "table": "subjects"
+    },
+    {
+      "nameExplicit": false,
+      "columns": [
+        "session_id"
+      ],
+      "schemaTo": "academic_syllabus",
+      "tableTo": "academic_sessions",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "RESTRICT",
+      "name": "syllabus_chapters_session_id_academic_sessions_id_fkey",
+      "entityType": "fks",
+      "schema": "academic_syllabus",
+      "table": "syllabus_chapters"
+    },
+    {
+      "nameExplicit": false,
+      "columns": [
+        "chapter_id",
+        "subject_id"
+      ],
+      "schemaTo": "academic_syllabus",
+      "tableTo": "chapters",
+      "columnsTo": [
+        "id",
+        "subject_id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "RESTRICT",
+      "name": "syllabus_chapters_d4cjcHNyW9Mz_fkey",
+      "entityType": "fks",
+      "schema": "academic_syllabus",
+      "table": "syllabus_chapters"
+    },
+    {
+      "nameExplicit": false,
+      "columns": [
+        "class_id"
+      ],
+      "schemaTo": "academic_syllabus",
+      "tableTo": "classes",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "RESTRICT",
+      "name": "users_class_id_classes_id_fkey",
+      "entityType": "fks",
+      "schema": "academic_syllabus",
+      "table": "users"
+    },
+    {
+      "columns": [
+        "batch_id",
+        "user_id"
+      ],
+      "nameExplicit": false,
+      "name": "batch_members_pkey",
+      "entityType": "pks",
+      "schema": "teaching",
+      "table": "batch_members"
+    },
+    {
+      "columns": [
+        "batch_id",
+        "session_id",
+        "subject_id"
+      ],
+      "nameExplicit": false,
+      "name": "batch_subjects_pkey",
+      "entityType": "pks",
+      "schema": "teaching",
+      "table": "batch_subjects"
+    },
+    {
+      "columns": [
+        "id"
+      ],
+      "nameExplicit": false,
+      "name": "academic_sessions_pkey",
+      "schema": "academic_syllabus",
+      "table": "academic_sessions",
+      "entityType": "pks"
+    },
+    {
+      "columns": [
+        "id"
+      ],
+      "nameExplicit": false,
+      "name": "batches_pkey",
+      "schema": "teaching",
+      "table": "batches",
+      "entityType": "pks"
+    },
+    {
+      "columns": [
+        "id"
+      ],
+      "nameExplicit": false,
+      "name": "boards_pkey",
+      "schema": "academic_syllabus",
+      "table": "boards",
+      "entityType": "pks"
+    },
+    {
+      "columns": [
+        "id"
+      ],
+      "nameExplicit": false,
+      "name": "books_pkey",
+      "schema": "academic_syllabus",
+      "table": "books",
+      "entityType": "pks"
+    },
+    {
+      "columns": [
+        "id"
+      ],
+      "nameExplicit": false,
+      "name": "chapters_pkey",
+      "schema": "academic_syllabus",
+      "table": "chapters",
+      "entityType": "pks"
+    },
+    {
+      "columns": [
+        "id"
+      ],
+      "nameExplicit": false,
+      "name": "classes_pkey",
+      "schema": "academic_syllabus",
+      "table": "classes",
+      "entityType": "pks"
+    },
+    {
+      "columns": [
+        "id"
+      ],
+      "nameExplicit": false,
+      "name": "files_pkey",
+      "schema": "academic_syllabus",
+      "table": "files",
+      "entityType": "pks"
+    },
+    {
+      "columns": [
+        "id"
+      ],
+      "nameExplicit": false,
+      "name": "subjects_pkey",
+      "schema": "academic_syllabus",
+      "table": "subjects",
+      "entityType": "pks"
+    },
+    {
+      "columns": [
+        "id"
+      ],
+      "nameExplicit": false,
+      "name": "syllabus_chapters_pkey",
+      "schema": "academic_syllabus",
+      "table": "syllabus_chapters",
+      "entityType": "pks"
+    },
+    {
+      "columns": [
+        "id"
+      ],
+      "nameExplicit": false,
+      "name": "users_pkey",
+      "schema": "academic_syllabus",
+      "table": "users",
+      "entityType": "pks"
+    },
+    {
+      "nameExplicit": false,
+      "columns": [
+        "board_id",
+        "label"
+      ],
+      "nullsNotDistinct": false,
+      "name": "academic_sessions_board_id_label_unique",
+      "entityType": "uniques",
+      "schema": "academic_syllabus",
+      "table": "academic_sessions"
+    },
+    {
+      "nameExplicit": false,
+      "columns": [
+        "board_id",
+        "start_year"
+      ],
+      "nullsNotDistinct": false,
+      "name": "academic_sessions_board_id_start_year_unique",
+      "entityType": "uniques",
+      "schema": "academic_syllabus",
+      "table": "academic_sessions"
+    },
+    {
+      "nameExplicit": false,
+      "columns": [
+        "subject_id",
+        "slug"
+      ],
+      "nullsNotDistinct": false,
+      "name": "chapters_subject_id_slug_unique",
+      "entityType": "uniques",
+      "schema": "academic_syllabus",
+      "table": "chapters"
+    },
+    {
+      "nameExplicit": false,
+      "columns": [
+        "subject_id",
+        "name"
+      ],
+      "nullsNotDistinct": false,
+      "name": "chapters_subject_id_name_unique",
+      "entityType": "uniques",
+      "schema": "academic_syllabus",
+      "table": "chapters"
+    },
+    {
+      "nameExplicit": false,
+      "columns": [
+        "id",
+        "subject_id"
+      ],
+      "nullsNotDistinct": false,
+      "name": "chapters_id_subject_id_unique",
+      "entityType": "uniques",
+      "schema": "academic_syllabus",
+      "table": "chapters"
+    },
+    {
+      "nameExplicit": false,
+      "columns": [
+        "board_id",
+        "class"
+      ],
+      "nullsNotDistinct": false,
+      "name": "classes_board_id_class_unique",
+      "entityType": "uniques",
+      "schema": "academic_syllabus",
+      "table": "classes"
+    },
+    {
+      "nameExplicit": false,
+      "columns": [
+        "class_id",
+        "slug"
+      ],
+      "nullsNotDistinct": false,
+      "name": "subjects_class_id_slug_unique",
+      "entityType": "uniques",
+      "schema": "academic_syllabus",
+      "table": "subjects"
+    },
+    {
+      "nameExplicit": false,
+      "columns": [
+        "class_id",
+        "long_name"
+      ],
+      "nullsNotDistinct": false,
+      "name": "subjects_class_id_long_name_unique",
+      "entityType": "uniques",
+      "schema": "academic_syllabus",
+      "table": "subjects"
+    },
+    {
+      "nameExplicit": false,
+      "columns": [
+        "session_id",
+        "chapter_id"
+      ],
+      "nullsNotDistinct": false,
+      "name": "syllabus_chapters_session_id_chapter_id_unique",
+      "entityType": "uniques",
+      "schema": "academic_syllabus",
+      "table": "syllabus_chapters"
+    },
+    {
+      "nameExplicit": false,
+      "columns": [
+        "subject_id",
+        "session_id",
+        "position"
+      ],
+      "nullsNotDistinct": false,
+      "name": "syllabus_chapters_subject_id_session_id_position_unique",
+      "entityType": "uniques",
+      "schema": "academic_syllabus",
+      "table": "syllabus_chapters"
+    },
+    {
+      "nameExplicit": false,
+      "columns": [
+        "slug"
+      ],
+      "nullsNotDistinct": false,
+      "name": "boards_slug_key",
+      "schema": "academic_syllabus",
+      "table": "boards",
+      "entityType": "uniques"
+    },
+    {
+      "nameExplicit": false,
+      "columns": [
+        "short_name"
+      ],
+      "nullsNotDistinct": false,
+      "name": "boards_short_name_key",
+      "schema": "academic_syllabus",
+      "table": "boards",
+      "entityType": "uniques"
+    },
+    {
+      "nameExplicit": false,
+      "columns": [
+        "syllabus_chapter_id"
+      ],
+      "nullsNotDistinct": false,
+      "name": "books_syllabus_chapter_id_key",
+      "schema": "academic_syllabus",
+      "table": "books",
+      "entityType": "uniques"
+    },
+    {
+      "nameExplicit": false,
+      "columns": [
+        "file_id"
+      ],
+      "nullsNotDistinct": false,
+      "name": "books_file_id_key",
+      "schema": "academic_syllabus",
+      "table": "books",
+      "entityType": "uniques"
+    },
+    {
+      "nameExplicit": false,
+      "columns": [
+        "file_key"
+      ],
+      "nullsNotDistinct": false,
+      "name": "files_file_key_key",
+      "schema": "academic_syllabus",
+      "table": "files",
+      "entityType": "uniques"
+    },
+    {
+      "nameExplicit": false,
+      "columns": [
+        "email"
+      ],
+      "nullsNotDistinct": false,
+      "name": "users_email_key",
+      "schema": "academic_syllabus",
+      "table": "users",
+      "entityType": "uniques"
+    },
+    {
+      "value": "\"label\" = \"start_year\"::text OR \"label\" = \"start_year\"::text || '-' || lpad(((\"start_year\" + 1) % 100)::text, 2, '0')",
+      "name": "academic_sessions_label_matches_start_year",
+      "entityType": "checks",
+      "schema": "academic_syllabus",
+      "table": "academic_sessions"
+    },
+    {
+      "value": "\"end_date\" > \"start_date\"",
+      "name": "academic_sessions_end_after_start",
+      "entityType": "checks",
+      "schema": "academic_syllabus",
+      "table": "academic_sessions"
+    },
+    {
+      "value": "\"class\" BETWEEN 1 AND 12",
+      "name": "classes_class_range",
+      "entityType": "checks",
+      "schema": "academic_syllabus",
+      "table": "classes"
+    },
+    {
+      "value": "\"position\" > 0",
+      "name": "syllabus_chapters_position_positive",
+      "entityType": "checks",
+      "schema": "academic_syllabus",
+      "table": "syllabus_chapters"
+    }
+  ],
+  "renames": []
+}

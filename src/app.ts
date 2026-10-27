@@ -31,6 +31,9 @@ app.use('/api/v1/boards', boardRoutes);
 import academicSessionsRoutes from './routes/academicSessions.routes.js';
 app.use('/api/v1/academic-sessions', academicSessionsRoutes);
 
+import classesRoutes from './routes/classes.routes.js';
+app.use('/api/v1/classes', classesRoutes);
+
 import subjectRoutes from './routes/subjects.routes.js';
 app.use('/api/v1/subjects', subjectRoutes);
 

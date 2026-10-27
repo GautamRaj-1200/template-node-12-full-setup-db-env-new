@@ -8,6 +8,10 @@ import {
   subjectsTable,
   chaptersTable,
   syllabusChaptersTable,
+  usersTable,
+  batchesTable,
+  batchMembersTable,
+  batchSubjectsTable,
 } from './schema.js';
 import {
   SESSIONS,
@@ -229,6 +233,132 @@ async function seedSyllabus(tx: Tx) {
   console.log(`Chapters: ${chapterCount} inserted, syllabus links: ${linkCount} written`);
 }
 
+// ─── 6. Test users ───────────────────────────────────────────────────
+async function seedUsers(tx: Tx) {
+  const classIds = await loadClassIds(tx);
+  const class8Id = classIds.get('icse:8');
+  const class10Id = classIds.get('icse:10');
+  if (!class8Id || !class10Id) throw new Error('ICSE classes 8 and 10 must exist');
+
+  const users = [
+    {
+      email: 'gautamraj996@gmail.com',
+      firstName: 'Raj',
+      lastName: 'Gautam',
+      classId: class8Id,
+    },
+    {
+      email: 'gautamrajv2@gmail.com',
+      firstName: 'Gautam',
+      lastName: 'Raj',
+      classId: null,
+    },
+    {
+      email: 'sauravkumar050610@gmail.com',
+      firstName: 'Saurav',
+      middleName: 'Kumar',
+      lastName: 'Singh',
+      classId: class10Id,
+    },
+    {
+      email: 'rishabhsingh30102010@gmail.com',
+      firstName: 'Rishabh',
+      middleName: 'Prasad',
+      lastName: 'Singh',
+      classId: class8Id,
+    },
+  ];
+
+  const inserted = await tx
+    .insert(usersTable)
+    .values(users)
+    .onConflictDoNothing({ target: usersTable.email })
+    .returning({ id: usersTable.id });
+
+  console.log(`Users: ${inserted.length} inserted`);
+}
+
+// ─── 7. Test batches, memberships, and assigned subjects ────────────
+async function seedBatches(tx: Tx) {
+  const users = await tx.select({ id: usersTable.id, email: usersTable.email }).from(usersTable);
+  const userIds = new Map(users.map((user) => [user.email, user.id]));
+  const teacherId = userIds.get('gautamrajv2@gmail.com');
+  const rajId = userIds.get('gautamraj996@gmail.com');
+  const sauravId = userIds.get('sauravkumar050610@gmail.com');
+  const rishabhId = userIds.get('rishabhsingh30102010@gmail.com');
+  if (!teacherId || !rajId || !sauravId || !rishabhId) {
+    throw new Error('Test users must exist before seeding batches');
+  }
+
+  async function getOrCreateBatch(name: string, creatorId: number) {
+    const [existing] = await tx
+      .select({ id: batchesTable.id })
+      .from(batchesTable)
+      .where(and(eq(batchesTable.name, name), eq(batchesTable.createdBy, creatorId)))
+      .limit(1);
+    if (existing) return existing.id;
+
+    const [created] = await tx
+      .insert(batchesTable)
+      .values({ name, createdBy: creatorId })
+      .returning({ id: batchesTable.id });
+    if (!created) throw new Error(`Could not create batch ${name}`);
+    return created.id;
+  }
+
+  const class8BatchId = await getOrCreateBatch('ICSE CLASS 08', teacherId);
+  const class10BatchId = await getOrCreateBatch('ICSE CLASS 10', teacherId);
+
+  await tx
+    .insert(batchMembersTable)
+    .values([
+      { batchId: class8BatchId, userId: teacherId, role: 'teacher' },
+      { batchId: class8BatchId, userId: rajId, role: 'student' },
+      { batchId: class8BatchId, userId: rishabhId, role: 'student' },
+      { batchId: class10BatchId, userId: teacherId, role: 'teacher' },
+      { batchId: class10BatchId, userId: rajId, role: 'student' },
+      { batchId: class10BatchId, userId: sauravId, role: 'student' },
+    ])
+    .onConflictDoNothing({ target: [batchMembersTable.batchId, batchMembersTable.userId] });
+
+  const classIds = await loadClassIds(tx);
+  const sessionIds = await loadSessionIds(tx);
+  const class8Id = classIds.get('icse:8');
+  const sessionId = sessionIds.get('icse:2026-27');
+  if (!class8Id || !sessionId) throw new Error('ICSE Class 8 and its session must exist');
+
+  const subjectSlugs = [
+    'mathematics',
+    'physics',
+    'chemistry',
+    'biology',
+    'computer',
+    'ai-robotics',
+  ] as const;
+  const subjects = await tx
+    .select({ id: subjectsTable.id, slug: subjectsTable.slug })
+    .from(subjectsTable)
+    .where(and(eq(subjectsTable.classId, class8Id), inArray(subjectsTable.slug, subjectSlugs)));
+  if (subjects.length !== subjectSlugs.length) {
+    throw new Error('All six ICSE Class 8 subjects must exist');
+  }
+
+  await tx
+    .insert(batchSubjectsTable)
+    .values(
+      subjects.map((subject) => ({ batchId: class8BatchId, sessionId, subjectId: subject.id })),
+    )
+    .onConflictDoNothing({
+      target: [
+        batchSubjectsTable.batchId,
+        batchSubjectsTable.sessionId,
+        batchSubjectsTable.subjectId,
+      ],
+    });
+
+  console.log('Batches: 2 ensured, memberships: 6 ensured, Class 8 subjects: 6 ensured');
+}
+
 // ─── Run everything in one transaction, parents before children ─────
 async function main() {
   await db.transaction(async (tx) => {
@@ -237,6 +367,8 @@ async function main() {
     await seedClasses(tx); // needs boards
     await seedSubjects(tx); // needs classes
     await seedSyllabus(tx); // needs sessions, subjects
+    await seedUsers(tx); // needs classes
+    await seedBatches(tx); // needs users, sessions, subjects
   });
 
   console.log('Seed complete');

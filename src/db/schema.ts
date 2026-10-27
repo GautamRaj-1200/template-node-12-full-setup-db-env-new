@@ -16,6 +16,8 @@ import { sql } from 'drizzle-orm';
 
 // Schemas
 export const academicSyllabus = snakeCase.schema('academic_syllabus');
+export const teaching = snakeCase.schema('teaching');
+export const batchRole = teaching.enum('batch_role', ['teacher', 'student']);
 
 // Shared timestamp columns
 const timestamps = {
@@ -142,6 +144,7 @@ export const chaptersTable = academicSyllabus.table(
 export const syllabusChaptersTable = academicSyllabus.table(
   'syllabus_chapters',
   {
+    id: integer().primaryKey().generatedAlwaysAsIdentity(),
     sessionId: integer()
       .notNull()
       .references(() => academicSessionsTable.id, { onDelete: 'restrict' }),
@@ -152,7 +155,7 @@ export const syllabusChaptersTable = academicSyllabus.table(
     ...timestamps,
   },
   (t) => [
-    primaryKey({ columns: [t.sessionId, t.chapterId] }),
+    unique().on(t.sessionId, t.chapterId),
     // No two chapters of the same subject share a position in a session.
     unique().on(t.subjectId, t.sessionId, t.position),
     // The (chapter, subject) pair must exist together in chapters.
@@ -162,4 +165,85 @@ export const syllabusChaptersTable = academicSyllabus.table(
     }).onDelete('restrict'),
     check('syllabus_chapters_position_positive', sql`${t.position} > 0`),
   ],
+);
+
+// Local user records can be linked to an external auth provider later.
+export const usersTable = academicSyllabus.table('users', {
+  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  firstName: varchar({ length: 100 }).notNull(),
+  middleName: varchar({ length: 100 }),
+  lastName: varchar({ length: 100 }).notNull(),
+  email: varchar({ length: 255 }).notNull().unique(),
+  classId: integer().references(() => classesTable.id, { onDelete: 'restrict' }),
+  // System-wide admin. Teacher/student roles are per batch (batch_members.role).
+  isAdmin: boolean().notNull().default(false),
+  ...timestamps,
+});
+
+export const filesTable = academicSyllabus.table('files', {
+  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  fileKey: text().notNull().unique(),
+  uploadedBy: integer()
+    .notNull()
+    .references(() => usersTable.id, { onDelete: 'restrict' }),
+  createdAt: timestamp({ withTimezone: true }).notNull().defaultNow(),
+});
+
+export const booksTable = academicSyllabus.table('books', {
+  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  syllabusChapterId: integer()
+    .notNull()
+    .unique()
+    .references(() => syllabusChaptersTable.id, { onDelete: 'restrict' }),
+  fileId: integer()
+    .notNull()
+    .unique()
+    .references(() => filesTable.id, { onDelete: 'restrict' }),
+  ...timestamps,
+});
+
+// A batch can span boards, classes, and subjects through its assigned session/subject pairs.
+export const batchesTable = teaching.table('batches', {
+  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+  name: varchar({ length: 150 }).notNull(),
+  createdBy: integer()
+    .notNull()
+    .references(() => usersTable.id, { onDelete: 'restrict' }),
+  ...timestamps,
+});
+
+export const batchSubjectsTable = teaching.table(
+  'batch_subjects',
+  {
+    batchId: integer()
+      .notNull()
+      .references(() => batchesTable.id, { onDelete: 'cascade' }),
+    sessionId: integer()
+      .notNull()
+      .references(() => academicSessionsTable.id, { onDelete: 'restrict' }),
+    subjectId: integer()
+      .notNull()
+      .references(() => subjectsTable.id, { onDelete: 'restrict' }),
+    createdAt: timestamp({ withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [primaryKey({ columns: [t.batchId, t.sessionId, t.subjectId] })],
+);
+
+export const batchMembersTable = teaching.table(
+  'batch_members',
+  {
+    batchId: integer()
+      .notNull()
+      .references(() => batchesTable.id, { onDelete: 'cascade' }),
+    userId: integer()
+      .notNull()
+      .references(() => usersTable.id, { onDelete: 'restrict' }),
+    role: batchRole().notNull(),
+    joinedAt: timestamp({ withTimezone: true }).notNull().defaultNow(),
+    updatedAt: timestamp({ withTimezone: true })
+      .notNull()
+      .defaultNow()
+      .$onUpdate(() => new Date()),
+  },
+  (t) => [primaryKey({ columns: [t.batchId, t.userId] })],
 );
